@@ -22,8 +22,11 @@ cp -v ${x} ${y}
 ##WARNING THIS MODIES THE INPUT FILE< SO MAKE SURE YOU COPIED THE ORIGINALS ELSEHWERE FOR BACKUP or that you are working in a copy
 
 while IFS=$'\t' read old new; do   #this reads each line and uses a tab seperator to split into two columns and assign the variables old and new
-#echo ${new}
-sed -i "s/$old/$new/g" "${y}"   #note here hpw I use variables old and new in the sed command
+	
+	if grep -q "${old:0:13}" "${y}"; then #If the participant of old header is part of the fasta filename, then proceed with replacing headers
+	#echo "yay"
+	sed -i "s/$old/$new/g" "${y}"   #note here hpw I use variables old and new in the sed command
+	fi
 done < V703_ENV_Lineage_headers.txt
 
 done
