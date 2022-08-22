@@ -9,6 +9,6 @@ do
 x=${array[$i]} 
 
 
-fasttree -gtr < ${x} > ${x%%.fasta}.nwk
+fasttree -nt -gtr < ${x} > ${x%%.fasta}.nwk
 done
 
