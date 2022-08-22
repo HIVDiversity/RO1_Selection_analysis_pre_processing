@@ -28,8 +28,8 @@ for ((i=1; i<${arraylength}+1; i++));
 		while read line;
 		do
 			if [[ "$(grep -c $line ${x}_tempfile)" -ge 1 ]]; then 
-				
-				outfile="${y:0:24}/${y}${line}.fasta"
+				mkdir ./${y:0:24}/${y:0:24}${line}
+				outfile="${y:0:24}/${y:0:24}${line}/${y}${line}.fasta"
 				echo ${y:0:24}/${y}${line}
 				echo "this file" ${x}_tempfile "contains " ${line}
 				echo "$(grep -A 1 "$line" ${x}_tempfile)" >> ${outfile};
