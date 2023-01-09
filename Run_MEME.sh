@@ -3,7 +3,7 @@ declare -a array=( $(ls 04_Lineage_partitioned_NT_alignments/V703*/V703*/*na*_fi
 
 arraylength=${#array[@]}
 
-for ((i=1; i<${arraylength}; i++));
+for ((i=0; i<${arraylength}; i++));
 do
 
 x=${array[$i]} #full path to a single input fasta file used in step 1.
