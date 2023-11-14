@@ -4,29 +4,42 @@
 
 #!/bin/bash
 
-declare -a array=( $(ls ./03_Codon_aligned_noHXB2/*V703*noHXB2.fasta) ) #searches current directory for fasta files and add their names to an array
+declare -a array=( $(ls ./HVTN703_Env_6_additional/*.fasta) ) #searches current directory for fasta files and add their names to an array
 arraylength=${#array[@]}
 
-for ((i=0; i<${arraylength}; i++));
-do
-x=${array[$i]} #full path to a single input fasta file used in step 1.
-#strip file prefeix and suffix, to create a variable that is the baseame of the input file and can be used to name output files
-y=${x%%.fasta}_lineages.fasta
+for ((i=0; i<${arraylength}; i++));do
+		x=${array[$i]} #full path to a single input fasta file used in step 1.
+		#strip file prefeix and suffix, to create a variable that is the baseame of the input file and can be used to name output files
+		y=${x%%.fasta}_lineages.fasta
 
-#first create a duplicate file with a new name, the headers will be updated in the new file
-#cp -v ${x} ${y}_lineages.fasta
-cp -v ${x} ${y}
-
-
-## this part reads each line in the pattern file and searches the fasta file for the pattern and does "in line" replacing with sed -i
-##WARNING THIS MODIES THE INPUT FILE< SO MAKE SURE YOU COPIED THE ORIGINALS ELSEHWERE FOR BACKUP or that you are working in a copy
-
-while IFS=$'\t' read old new; do   #this reads each line and uses a tab seperator to split into two columns and assign the variables old and new
-	
-	if grep -q "${old:0:13}" "${y}"; then #If the participant of old header is part of the fasta filename, then proceed with replacing headers
-	#echo "yay"
-	sed -i "s/$old/$new/g" "${y}"   #note here hpw I use variables old and new in the sed command
-	fi
-done < V703_ENV_Lineage_headers.txt
-
+		#first create a duplicate file with a new name, the headers will be updated in the new file later on
+		cp -v ${x} ${y}
+		mv ${y} ./ #Move the file which will be modified to current dir
 done
+
+## other option...needs fixing
+##Maybe add a test to see if it is Gag or Env and then treat them seperatly
+
+message1=" "
+while IFS=$'\t' read old new; do
+	base_of_file=${old:0:10}
+	message2="${base_of_file}"
+##	echo "the base of the file is ${base_of_file}"
+	filenames=($(ls ${base_of_file}*.fasta)) # searches for a filename that matches part of the old PID
+##	echo "the list of files are ${filenames[*]}"
+	for filename in "${filenames[@]}"; do  #is it faster or slower if I take this out?
+	#echo "the filename is ${filename}"
+		if grep -q "${old:0:15}" "${filename}"; then
+			sed -i "s/$old/$new/g" "$filename"
+#		echo "replacement happened in ${filename} with $new"
+		fi
+	if [ "${message1}" != "${message2}" ]; then
+	echo "${message2}"
+	message1="${message2}"
+	fi
+done
+
+
+done < Old_new_headers2.txt
+
+
