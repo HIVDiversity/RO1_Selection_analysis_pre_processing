@@ -23,14 +23,13 @@ for ((i=1; i<${arraylength}+1; i++));
 		awk '!/^>/ { printf "%s", $0; n = "\n" } /^>/ { print n $0; n = "" } END { printf "%s", n }' ${x} > ${x}_tempfile
 
 		#outdir=mkdir ../Partitioned_lineages/${y:0:24} #outdir where partitioned lineage files will be saved
-	mkdir ./${y:0:24}
 #Use as input the file with lineage names, search for pattern in fasta file and write sequences to new file
 		while read line;
 		do
 			if [[ "$(grep -c $line ${x}_tempfile)" -ge 1 ]]; then 
-				mkdir ./${y:0:24}/${y:0:24}${line}
-				outfile="${y:0:24}/${y:0:24}${line}/${y}${line}.fasta"
-				echo ${y:0:24}/${y}${line}
+				mkdir ./${y::-9}/${y::-9}${line}
+				outfile="${y::-9}/${y::-9}${line}/${y}${line}.fasta"
+				echo ${y::-9}/${y}${line}
 				echo "this file" ${x}_tempfile "contains " ${line}
 				echo "$(grep -A 1 "$line" ${x}_tempfile)" >> ${outfile};
 				#echo "$line" >> ${outfile};
