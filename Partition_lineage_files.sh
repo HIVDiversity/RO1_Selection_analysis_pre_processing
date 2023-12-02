@@ -7,7 +7,7 @@
 #if the substring is found, a new fasta file is created with that particular header and the sequence on the line below it
 #the temp file is deleted
 
-declare -a array=( $(ls *V703*noHXB2*lineages.fasta) ) #searches current directory for fasta files and add their names to an array
+declare -a array=( $(ls *V70*.fasta) ) #searches current directory for fasta files and add their names to an array
 arraylength=${#array[@]}
 
 for ((i=1; i<${arraylength}+1; i++));
@@ -35,7 +35,7 @@ for ((i=1; i<${arraylength}+1; i++));
 				echo "$(grep -A 1 "$line" ${x}_tempfile)" >> ${outfile};
 				#echo "$line" >> ${outfile};
 		fi
-		done < ../V703_Lineage_nomenclature_list.txt
+		done < ../V703_nomenclature_list.txt
 		
 rm ${x}_tempfile
 done
