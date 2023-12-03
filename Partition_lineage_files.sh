@@ -10,7 +10,7 @@
 declare -a array=( $(ls *V70*.fasta) ) #searches current directory for fasta files and add their names to an array
 arraylength=${#array[@]}
 
-for ((i=1; i<${arraylength}+1; i++));
+for ((i=0; i<${arraylength}+1; i++));
 	do
 		
 		x=${array[$i-1]}
